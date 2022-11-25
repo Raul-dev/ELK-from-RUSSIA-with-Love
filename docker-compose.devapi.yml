@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  productapi:
+    build:
+      context: ./ProductApi
+      dockerfile: ./ProductApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=QA
+    restart: always
+    ports:
+      - '5248:80'
+      - '5249:443'      
+    volumes:
+      - ./logs:/logs            
+    depends_on:
+       postgresdb:
+          condition: service_healthy
+  api07:
+    build:
+      context: ./api07
+      dockerfile: ./api07/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=QA
+    restart: always
+    ports:
+      - '5401:80'
+      - '5402:443'
+    volumes:
+      - ./logs:/logs            
+    depends_on:
+       postgresdb:
+          condition: service_healthy
+  postgresdb:
+    build:
+      context: ./postgresdb
+    healthcheck:
+      test: test -f /tmp/finished.ok
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - DB_NAME_API=productapi
+
+    ports:
+      - '54321:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+volumes:
+  postgres-data:
+    driver: local

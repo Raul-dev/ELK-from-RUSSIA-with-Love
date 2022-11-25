@@ -1,0 +1,16 @@
+__pycache__
+.vscode
+.vs
+bin
+obj
+logs
+fastapi/venv
+fastapi/.idea
+fastapi/app/__pycache__
+fastapi/app/logs
+filebeat/filebeat-8.0.0-linux-x86_64.tar.gz
+filebeat_base/filebeat-8.0.0-linux-x86_64.tar.gz
+ProductApi/.vs
+ProductApi/Logs
+ProductApi/ProductApi/bin
+ProductApi/ProductApi/obj
