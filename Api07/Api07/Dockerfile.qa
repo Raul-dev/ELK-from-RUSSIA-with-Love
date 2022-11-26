@@ -1,0 +1,33 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["Api07/Api07.csproj", "Api07/"]
+RUN dotnet restore "Api07/Api07.csproj"
+COPY . .
+WORKDIR "/src/Api07"
+RUN dotnet build "Api07.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Api07.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+
+apt-get update
+apt-get -y install curl && apt-get -y install gpg
+
+curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/fluentbit-keyring.gpg] https://packages.fluentbit.io/debian/bullseye bullseye main" >> /etc/apt/sources.list
+apt-get -y update
+apt-get -y upgrade
+apt-get install -y fluent-bit
+
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Api07.dll"]

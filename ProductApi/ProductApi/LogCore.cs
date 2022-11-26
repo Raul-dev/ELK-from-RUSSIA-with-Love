@@ -15,6 +15,7 @@ using Serilog.Context;
 using Serilog.Core.Enrichers;
 
 using System.Text.RegularExpressions;
+using Serilog.Sinks.Elasticsearch;
 
 namespace ProductApi
 {
@@ -76,12 +77,24 @@ namespace ProductApi
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
                 .Build();
 
-            return new LoggerConfiguration()
-//                .MinimumLevel.Information()
-//                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-//                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+            var cfg = new LoggerConfiguration()
+                        //                .MinimumLevel.Information()
+                        //                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                        //                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(config["ElasticConfiguration:Uri"]))
+                {
+                    AutoRegisterTemplate = true,
+                    TypeName = null,
+                    //IndexFormat = "logs-my-stream",
+                    BatchAction = ElasticOpType.Create,
+                    IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{DateTime.UtcNow:yyyy-MM}"
+                })
+
                 .ReadFrom.Configuration(config);
-                
+
+            
+            //var t = cfg.WriteTo["Elasticsearch"].type;
+            return cfg;
         }
         public static LoggerConfiguration ConfigureLoger()
         {
@@ -95,7 +108,7 @@ namespace ProductApi
 
             if (!builder.Environment.IsProduction())
             {
-                string connection = builder.Configuration.GetConnectionString("HolisticHubFilesDb");
+                string connection = builder.Configuration.GetConnectionString("ProductApiContext");
                 if (!string.IsNullOrEmpty(connection))
                 {
                     string strPort = "";
@@ -103,7 +116,7 @@ namespace ProductApi
                     Match match = rx.Matches(connection)[0];
                     Regex rxDatabase = new(@$"Database=([^;]*)");
                     Match matchDatabase = rxDatabase.Matches(connection)[0];
-                    Regex rxPort = new(@$"Database=([^;]*)");
+                    Regex rxPort = new(@$"Port=([^;]*)");
                     Match matchPort = rxPort.Matches(connection)[0];
                     if (match.Groups.Count == 0)
                         Log.Logger.Debug("DB Host not found.");
@@ -112,7 +125,7 @@ namespace ProductApi
                     if (matchPort.Groups.Count != 0)
                         strPort =", " + matchPort.Groups[0].Value;
                     if (match.Groups.Count != 0 && matchDatabase.Groups.Count != 0)
-                        Log.Logger.Debug("DB setup: {0}, {1}{2}.", match.Groups[0].Value, matchDatabase.Groups[0].Value, strPort);
+                        Log.Logger.Debug("Postgres DB setup: {0}, {1}{2}.", match.Groups[0].Value, matchDatabase.Groups[0].Value, strPort);
                 }
             }
 

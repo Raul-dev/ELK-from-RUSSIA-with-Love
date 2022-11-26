@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using ProductApi;
 using ProductApi.Data;
 using Serilog;
+using Serilog.Sinks.Elasticsearch;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 Log.Logger = LogCore.ConfigureLoger()

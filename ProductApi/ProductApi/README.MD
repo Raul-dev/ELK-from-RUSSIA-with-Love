@@ -15,6 +15,10 @@ Update-Database
           "outputTemplate": "{Timestamp:HH:mm:ss.fff} [{Level:u3}] [{SourceContext}] {Message}{NewLine}{Exception}",
 https://stackoverflow.com/questions/66550450/how-to-use-expression-template-with-appsettings-in-serilog
 
+6) dotnet add package Serilog.Sinks.Elasticsearch --version 8.4.1
+Install-Package serilog.sinks.elasticsearch
+https://github.com/serilog-contrib/serilog-sinks-elasticsearch
+
 "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
 docker logs --tail 50 --follow --timestamps 51479fcb93a7
 
