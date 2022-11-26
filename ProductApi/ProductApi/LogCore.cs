@@ -1,21 +1,9 @@
 ﻿
 using Serilog;
-
-using Serilog.Events;
-using Serilog.Sinks.File;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-
-using System.Security.AccessControl;
-using Serilog.Formatting.Json;
-
 using Serilog.Context;
 using Serilog.Core.Enrichers;
-
 using System.Text.RegularExpressions;
-using Serilog.Sinks.Elasticsearch;
+
 
 namespace ProductApi
 {
@@ -78,18 +66,19 @@ namespace ProductApi
                 .Build();
 
             var cfg = new LoggerConfiguration()
-                        //                .MinimumLevel.Information()
-                        //                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                        //                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+/*
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(config["ElasticConfiguration:Uri"]))
                 {
                     AutoRegisterTemplate = true,
-                    TypeName = null,
-                    //IndexFormat = "logs-my-stream",
+                    TypeName = null, Библиотека засерилога глючит, шлёт _type
+                    IndexFormat = "logs-my-stream",
                     BatchAction = ElasticOpType.Create,
-                    IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{DateTime.UtcNow:yyyy-MM}"
+                    //IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower()}-{DateTime.UtcNow:yyyy-MM}"
                 })
-
+*/
                 .ReadFrom.Configuration(config);
 
             

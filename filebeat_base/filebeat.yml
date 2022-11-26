@@ -10,9 +10,9 @@ filebeat.inputs:
   scan_frequency: 1s
   enabled: true
   paths:
-    - /src/logs/data-catalog.*
+    - /src/logs/*.*
   fields:
-    - service: fastapi-app
+    - service: filebeatall-app
   fields_under_root: true
 
 output.elasticsearch:

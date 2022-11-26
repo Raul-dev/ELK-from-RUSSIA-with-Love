@@ -25,12 +25,14 @@ In future I'll publish proxy settings to bypass the block from Amazon Cloudfront
 
 ## Startup commands
 ```
-docker-compose -f docker-compose.elk.yml build --progress plain
+docker-compose -f docker-compose.elk.yml build --progress plain --no-cache
 docker-compose -f docker-compose.elk.yml up --no-color --force-recreate
 ```
 
 ## Help commands
 ```
+docker-compose -f docker-compose.elk.yml build --progress plain --no-cache  logstash
+
 docker ps -a --filter "ancestor=elas" --format "{{.ID}}"
 docker rm $(docker ps -qa --no-trunc --filter "status=exited")
 docker rmi -f $(docker images prod* --format "{{.ID}}")

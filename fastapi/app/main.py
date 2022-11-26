@@ -39,7 +39,7 @@ def check_connection():
             time.sleep(5)
 
     if cntatempts == 4:
-        return False
+        return True
     else:
         return True
 

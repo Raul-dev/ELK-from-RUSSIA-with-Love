@@ -22,8 +22,9 @@ RUN ls filebeat
 RUN cd filebeat && \
     cp filebeat /usr/bin && \
     rm -rf /filebeat/filebeat.yml && \
-    cp /filebeat.yml /filebeat/ && \
-    ls -ltr /filebeat && \
+    cp /filebeat.yml /filebeat/ 
+
+RUN ls -ltr /filebeat && \
     cat /filebeat/filebeat.yml
 
 VOLUME /filebeat/data
