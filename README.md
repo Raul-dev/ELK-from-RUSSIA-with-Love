@@ -29,7 +29,7 @@ docker-compose -f docker-compose.elk.yml build --progress plain
 docker-compose -f docker-compose.elk.yml up --no-color --force-recreate
 ```
 
-# Help commands
+## Help commands
 ```
 docker ps -a --filter "ancestor=elas" --format "{{.ID}}"
 docker rm $(docker ps -qa --no-trunc --filter "status=exited")
