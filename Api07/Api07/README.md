@@ -18,7 +18,13 @@ apt-get update
 apt-get upgrade
 apt-get install -y fluent-bit
 
+https://github.com/repeatedly/fluent-plugin-stdin
+Setup
+fluent bit -> Logstash
+https://docs.fluentbit.io/tutorials/ship_to/logstash
 
+
+https://medium.com/hepsiburadatech/fluent-logging-architecture-fluent-bit-fluentd-elasticsearch-ca4a898e28aa
 
 https://www.elastic.co/guide/en/logstash/current/plugins-inputs-beats.html
 input {

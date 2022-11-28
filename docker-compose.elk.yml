@@ -5,7 +5,7 @@ services:
     image: "docker.io/bitnami/elasticsearch:8"
     container_name: elasticsearch
     environment:
-      #- "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - "discovery.type=single-node"
     ports:
       - "9200:9200"
@@ -41,12 +41,17 @@ services:
   logstash:
     build:
       context: logstash/
+      dockerfile: Dockerfile.original
     ports:
+      - 8081:8080
       - 31000:31000
       - 5044:5044
       - 50000:50000/tcp
       - 50000:50000/udp
       - 9600:9600
+    volumes:
+      - ./logs:/src/logs    
+#      - logstash_data:/bitnami  
     environment:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
 #      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
@@ -103,24 +108,7 @@ services:
     depends_on:
       postgresdb:
         condition: service_healthy
-        
-  productapi:
-    build:
-      context: ./ProductApi
-      dockerfile: ./ProductApi/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=QA
-    restart: always
-    ports:
-      - '5248:80'
-      - '5249:443'      
-    volumes:
-      - ./logs:/logs  
-    networks:
-      - elk      
-    depends_on:
-       postgresdb:
-          condition: service_healthy
+
   api07:
     build:
       context: ./api07
@@ -144,6 +132,8 @@ networks:
           
 volumes:
   elasticsearch_data:
+    driver: local
+  logstash_data:
     driver: local
   postgres-data:
     driver: local

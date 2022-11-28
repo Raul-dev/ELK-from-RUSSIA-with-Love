@@ -18,15 +18,19 @@ RUN dotnet publish "Api07.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 
-apt-get update
-apt-get -y install curl && apt-get -y install gpg
+RUN  apt-get update
+RUN apt-get -y install curl && apt-get -y install gpg
 
-curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg
+RUN curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg
 
-echo "deb [signed-by=/usr/share/keyrings/fluentbit-keyring.gpg] https://packages.fluentbit.io/debian/bullseye bullseye main" >> /etc/apt/sources.list
-apt-get -y update
-apt-get -y upgrade
-apt-get install -y fluent-bit
+RUN echo "deb [signed-by=/usr/share/keyrings/fluentbit-keyring.gpg] https://packages.fluentbit.io/debian/bullseye bullseye main" >> /etc/apt/sources.list
+RUN apt-get -y update
+RUN  apt-get -y upgrade
+RUN apt-get install -y fluent-bit
+RUN gem install fluent-plugin-stdin
+COPY fluent.conf /fluentd/etc/
+COPY entrypoint.sh /bin/
+RUN chmod +x /bin/entrypoint.sh
 
 WORKDIR /app
 COPY --from=publish /app/publish .

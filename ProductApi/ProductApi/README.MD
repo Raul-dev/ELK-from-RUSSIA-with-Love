@@ -22,23 +22,15 @@ https://github.com/serilog-contrib/serilog-sinks-elasticsearch
 "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
 docker logs --tail 50 --follow --timestamps 51479fcb93a7
 
-not found Sample.CustomPolicy
-      {
-        "Name": "With",
-        "Args": { "policy": "Sample.CustomPolicy, Sample" }
-      },
-    "Enrich": [ "FromLogContext", "PodName", "NodeName" ],
-    "Destructure": [
-      {
-        "Name": "ToMaximumDepth",
-        "Args": { "maximumDestructuringDepth": 4 }
-      },
-      {
-        "Name": "ToMaximumStringLength",
-        "Args": { "maximumStringLength": 100 }
-      },
-      {
-        "Name": "ToMaximumCollectionCount",
-        "Args": { "maximumCollectionCount": 10 }
-      }
-    ],
+logstash post request
+https://subscription.packtpub.com/book/data/9781787281868/10/ch10lvl1sec62/sending-data-to-logstash-over-http
+
+$ curl -sSL https://raw.githubusercontent.com/bitnami/containers/main/bitnami/APP/docker-compose.yml > docker-compose.logstash.yml
+$ docker-compose up -d
+curl -XPOST -u sensor_data:sensor_data --header "Content-Type: application/json" "http://localhost:31000/" -d '{"sensor_id":1,"time":1512102540000,"reading":16.24}'
+
+https://devconnected.com/how-to-install-logstash-on-ubuntu-18-04-and-debian-9/
+
+https://stackoverflow.com/questions/19086404/how-to-debug-the-logstash-file-plugin
+
+appsettings.json

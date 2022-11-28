@@ -1,0 +1,18 @@
+# https://github.com/bitnami/containers/blob/main/bitnami/logstash/8/debian-11/Dockerfile
+FROM docker.io/bitnami/logstash:8
+# Add your logstash plugins setup here
+# Example: RUN logstash-plugin install logstash-filter-json
+RUN logstash-plugin install logstash-input-http
+
+RUN cat /etc/os-release
+USER root
+RUN mkdir -p /src/logs
+COPY ./config/logstash.yml /opt/bitnami/logstash/config/logstash.yml:
+COPY ./pipeline/logstash.conf /opt/bitnami/logstash/pipeline/logstash.conf
+RUN chmod +rwx /opt/bitnami/logstash/pipeline/logstash.conf
+RUN chown logstash /opt/bitnami/logstash/pipeline/logstash.conf
+
+
+USER logstash
+
+#logstash -f /usr/share/logstash/pipeline/logstash.conf
