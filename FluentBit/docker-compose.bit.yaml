@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+  fluentbit:
+    container_name: fluent-bit
+    image: fluent/fluent-bit
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    volumes:
+      # добавляем конфигурацию в контейнер
+      - ./fluentbit.test.config:/fluent-bit/etc/fluent-bit.conf      
+  ubuntu:
+    image: ubuntu
+    command: [/bin/echo, "Kevcodez"]
+    depends_on:
+      - fluentbit
+    logging:
+      driver: fluentd
+      options:
+        tag: docker-ubuntu

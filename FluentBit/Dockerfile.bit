@@ -1,0 +1,20 @@
+FROM debian:11
+RUN  apt-get update
+RUN apt-get -y install curl && apt-get -y install gpg
+
+RUN curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor > /usr/share/keyrings/fluentbit-keyring.gpg
+
+RUN echo "deb [signed-by=/usr/share/keyrings/fluentbit-keyring.gpg] https://packages.fluentbit.io/debian/bullseye bullseye main" >> /etc/apt/sources.list
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y fluent-bit
+#RUN apt-get install rubygems build-essential
+#RUN gem install fluent-plugin-stdin
+COPY fluentbit.test.config /fluentd/etc/fluent.conf
+#COPY entrypoint.sh /bin/
+#RUN chmod +x /bin/entrypoint.sh
+RUN ls /fluentd/etc/
+WORKDIR /opt/fluent-bit/bin/
+CMD ["fluent-bit", "-c", "/fluentd/etc/fluent.conf"]
+#/opt/fluent-bit/bin/fluent-bit
+#CMD ["/fluent-bit/bin/fluent-bit", "-c", "/fluent-bit/etc/fluent-bit.conf"]
