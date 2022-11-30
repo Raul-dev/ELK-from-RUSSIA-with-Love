@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+
+  api07:
+    image: elk-from-russia-with-love_api07
+    environment:
+      - ASPNETCORE_ENVIRONMENT=QA
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+#      - ASPNETCORE_Kestrel__Certificates__Default__Password=
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+    restart: always
+    ports:
+      - '5401:80'
+      - '5402:443'
+    volumes:
+      - ./logs:/var/logs
+#      - ~/.aspnet/https:/https:ro            
+      - ./https:/https:ro  
+          
+  nginxtest:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./logs:/logs       

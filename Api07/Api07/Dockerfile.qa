@@ -31,7 +31,7 @@ RUN gem install fluent-plugin-stdin
 COPY fluent.conf /fluentd/etc/
 COPY entrypoint.sh /bin/
 RUN chmod +x /bin/entrypoint.sh
-
+RUN mkdir -p /https
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api07.dll"]
