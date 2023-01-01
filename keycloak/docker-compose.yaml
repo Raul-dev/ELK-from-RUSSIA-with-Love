@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.1
+#    restart: unless-stopped
+    healthcheck:
+      test: curl --fail -s http://localhost:8080 || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HTTP_RELATIVE_PATH=/keycloak/
+#      - KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/aspcertificat.crt
+#      - KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/aspcertificat.key
+#      - KC_HTTPS_KEY_STORE_PASSWORD=
+    volumes:
+      - ${KEY_REALM_JSON:-./configs/dev/keycloak/realm.json}:/opt/keycloak/data/import/realm.json # import realm on start up
+      - ${KEY_THEMES_FOLDER:-./configs/dev/keycloak/themes/holistic-hub}:/opt/keycloak/themes/holistic-hub # custom styling
+      - ${KEY_PROV_FOLDER:-./Configs/dev/keycloak/providers}:/opt/keycloak/providers # custom providers
+#      - ${HTTPS_CERTIFICATE_FILE:-./deployment/cert/aspcertificat.crt}:/opt/keycloak/conf/aspcertificat.crt 
+#      - ${HTTPS_CERTIFICATE_KEY_FILE:-./deployment/cert/aspcertificat.key}:/opt/keycloak/conf/aspcertificat.key    
+#      - ./deployment/cert/aspcertificat.pfx:/opt/keycloak/conf/aspcertificat.pfx
+    ports:
+      - '8080:8080'
+      - '8443:8443'      
+    command:
+      - start-dev
+      - --import-realm
