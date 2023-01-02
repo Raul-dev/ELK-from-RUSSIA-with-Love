@@ -32,11 +32,13 @@ docker-compose -f docker-compose.elk.yml up --no-color --force-recreate
 ## Kibana startup url
 http://localhost:5601/
 
-Stack Management -> Data views. Click "Create data view" button, select index pattern qa-app and save new view.
+Stack Management -> Data views. Click "Create data view" button, select index pattern dotnetlogs and save new view.
+
+![Screenshot](./Doc/dotnetjson.png)
 
 ## Help commands
 ```
-docker-compose -f docker-compose.elk.yml build --progress plain --no-cache  logstash
+docker-compose -f docker-compose.elk.yml build --progress plain --no-cache logstash
 
 docker ps -a --filter "ancestor=elas" --format "{{.ID}}"
 docker rm $(docker ps -qa --no-trunc --filter "status=exited")
