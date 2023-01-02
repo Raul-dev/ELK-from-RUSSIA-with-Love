@@ -29,6 +29,11 @@ docker-compose -f docker-compose.elk.yml build --progress plain --no-cache
 docker-compose -f docker-compose.elk.yml up --no-color --force-recreate
 ```
 
+## Kibana startup url
+http://localhost:5601/
+
+Stack Management -> Data views. Click "Create data view" button, select index pattern qa-app and save new view.
+
 ## Help commands
 ```
 docker-compose -f docker-compose.elk.yml build --progress plain --no-cache  logstash

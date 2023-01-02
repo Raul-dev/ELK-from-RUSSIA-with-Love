@@ -1,4 +1,9 @@
-﻿1) Added 
+﻿0) Add to host file for postgres connection from dev
+YourLocalIP host.docker.internal
+Example:
+192.168.0.15 host.docker.internal
+
+1) Added 
 Install-Package Microsoft.EntityFrameworkCore.Tools
 https://www.learnentityframeworkcore.com/configuration/data-annotation-attributes
 Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design
@@ -34,3 +39,4 @@ https://devconnected.com/how-to-install-logstash-on-ubuntu-18-04-and-debian-9/
 https://stackoverflow.com/questions/19086404/how-to-debug-the-logstash-file-plugin
 
 appsettings.json
+

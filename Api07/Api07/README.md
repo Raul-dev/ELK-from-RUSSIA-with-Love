@@ -1,3 +1,8 @@
+0) Add to host file for postgres connection from dev
+YourLocalIP host.docker.internal
+Example:
+192.168.0.15 host.docker.internal
+
 https://habr.com/ru/post/548998/
 https://slurm.io/tpost/0d06xiobme-logirovanie-v-kubernetes-kak-sobirat-hra
 https://docs.fluentbit.io/manual/installation/linux/ubuntu

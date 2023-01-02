@@ -1,4 +1,4 @@
-name: "fastapi-app-filebeat"
+name: "python-fastapi-app"
 logging.metrics.enabled: false
 xpack.security.enabled: false
 xpack.monitoring.enabled: false
@@ -6,15 +6,15 @@ setup.ilm.enabled: false
 setup.template.enabled: false
 
 filebeat.inputs:
-- type: log
+- type: filestream
   scan_frequency: 1s
   enabled: true
   paths:
-    - /src/logs/*.*
+    - /src/logs/fastapi.*
   fields:
-    - service: fastapi-app
+    - service: fastapi-python-app
   fields_under_root: true
 
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
-  index: "fastapi-app"
+  index: "fastapi-python-app"
